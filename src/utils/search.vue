@@ -1,8 +1,9 @@
 <template>
   <div class="search-bar">
     <div class="serch-input">
-      <icon type="search" color="#999" size="10px" /> 搜索
-      <!-- <input type="text" placeholder="搜索"> -->
+      <navigator url="/pages/search/main">
+        <icon type="search" color="#999" size="10px" /> 搜索
+      </navigator>
     </div>
   </div>
 </template>

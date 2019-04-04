@@ -3,7 +3,9 @@
     "pages/home/main",
     "pages/category/main",
     "pages/cart/main",
-    "pages/my/main"
+    "pages/my/main",
+    "pages/search/main",
+    "pages/search_list/main"
   ],
   "window": {
     "backgroundTextStyle": "light",

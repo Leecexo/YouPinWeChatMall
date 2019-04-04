@@ -40,7 +40,7 @@
 </template>
 <script>
   import request from '../../utils/request'
-  import SearchBar from '../../utils/search.vue';
+  import SearchBar from '../../utils/search.vue'
   export default {
     data() {
       return {

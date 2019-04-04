@@ -30,12 +30,20 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 0,
+			"current": 1,
 			"list": [
 				{
 					"id": -1,
 					"name": "cat",
 					"pathName": "pages/category/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 1,
+					"name": "搜索结果页",
+					"pathName": "pages/search_list/main",
+					"query": "query=电视",
 					"scene": null
 				}
 			]
