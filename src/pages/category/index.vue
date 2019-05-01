@@ -11,10 +11,10 @@
         </div>
       </div>
       <div class="right">
-        <div :key='item1.cat_id' v-for='item1 in rightData' class="brand-item">
+        <div :key='item1.cat_name' v-for='item1 in rightData' class="brand-item">
           <div class="brand-title">{{item1.cat_name}}</div>
           <div class="brand-list">
-            <div :key='i' v-for='(img, i) in item1.children' class="brand">
+            <div @click="clickGoodsList(img.cat_name,item1.cat_name)" :key='i' v-for='(img, i) in item1.children' class="brand">
               <img :src="img.cat_icon" mode="aspectFill">
               <p>{{img.cat_name}}</p>
             </div>
@@ -37,6 +37,12 @@
       }
     },
     methods: {
+      clickGoodsList(cat_name, car_name) {
+        // console.log(cat_name, car_name)
+        mpvue.navigateTo({
+          url: "/pages/goods_list/main?cat_name=" + cat_name + "&car_name=" + car_name
+        })
+      },
       async getcatData() {
         let res = await request("categories")
         this.catelist = res.data.message

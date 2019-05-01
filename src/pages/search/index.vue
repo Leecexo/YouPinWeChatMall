@@ -11,13 +11,11 @@
       <!-- 取消按钮 -->
       <button v-if="keywords" class="btn" @click="clearInput">取消</button>
       <!-- 搜索结果 -->
-      <div class="search-result" v-if="keywords">
-
+      <div class="search-result" v-if="keywords && getSearchData !== null">
         <ul>
-          <!-- <li v-show="getSearchData.length === 0" class="result">无搜索结果</li> -->
+          <li v-show="getSearchData.length === 0" class="result">无搜索结果</li>
           <li :key="item.goods_id" v-for="item in getSearchData">{{item.goods_name}}</li>
         </ul>
-
       </div>
     </div>
     <!-- 搜索历史 组 -->
@@ -27,9 +25,8 @@
         <icon type="clear" size="16" @click="clearKeyword"></icon>
       </div>
       <ul>
-        <navigator :url="'/pages/search_list/main?query=' + item">
-          <li :key="index" v-for="(item,index) in keywordsListData">{{item}}</li>
-        </navigator>
+        <!-- 点击搜索结果跳转到 搜索列表页 -->
+        <li :key="index" v-for="(item,index) in keywordsListData" @click="clickKeywords(item)">{{item}}</li>
       </ul>
     </div>
   </div>
@@ -73,27 +70,34 @@
       },
       // 点击键盘上的搜索 -- 执行的事件
       async searchConfirm() {
-        // 判断数组中是否已经有该关键词
-        let jde = mpvue.getStorageSync("keyword").indexOf(this.keywords)
-        // 如果没有，则插入数组
-        if (jde === -1) {
-          this.keywordsListData.unshift(this.keywords)
-          mpvue.setStorageSync("keyword", this.keywordsListData)
+        // 判断输入关键词是否为空
+        if (this.keywords !== '' && this.keywords !== ' ') {
+          // 判断数组中是否已经有该关键词
+          let jde = mpvue.getStorageSync("keyword").indexOf(this.keywords)
+          // 如果没有，则插入数组
+          if (jde === -1) {
+            this.keywordsListData.unshift(this.keywords)
+            mpvue.setStorageSync("keyword", this.keywordsListData)
+          }
+          // 跳转到搜索列表页
+          mpvue.navigateTo(
+            { url: "/pages/search_list/main?query=" + this.keywords }
+          )
+        } else {
+          return
         }
-        // 跳转到搜索列表页
-        mpvue.navigateTo(
-          { url: "/pages/search_list/main?query=" + this.keywords }
-        )
       },
       // 清除搜索历史
       clearKeyword() {
         mpvue.clearStorageSync("keyword")
         this.keywordsListData = []
       },
-      // 点击搜索结果跳转到 搜索列表页
-      // enterSearch() {
-
-      // }
+      // 搜索历史点击直接跳转到当前关键词对应搜索结果页
+      clickKeywords(keywords) {
+        mpvue.navigateTo({
+          url: '/pages/search_list/main?query=' + keywords
+        })
+      }
     },
   }
 </script>

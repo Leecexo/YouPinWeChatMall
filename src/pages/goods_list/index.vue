@@ -3,7 +3,7 @@
     <!-- 搜索框 -->
     <div class="serch-input">
       <navigator url="/pages/search/main">
-        <icon type="search" color="#999" size="12" /> {{keyword}}
+        <icon type="search" color="#999" size="12" /> 搜索
       </navigator>
     </div>
     <!-- 选项卡 -->
@@ -38,12 +38,11 @@
   </div>
 </template>
 <script>
-  import SearchBar from '../../utils/search.vue'
   import request from '../../utils/request';
   export default {
     data() {
       return {
-        keyword: '', // input keywords内关键词
+        cat_name: '', // input keywords内关键词
         tabNames: ['综合', '销量', '价格'], // 选项卡选项
         currentIndex: 0, // 当前选项卡选项
         list: [],
@@ -58,43 +57,35 @@
       tabHandle(index) {
         this.currentIndex = index
       },
+      // 获取数据
       async getData() {
         const res = await request("goods/search", "get", {
-          query: this.keyword,
+          query: this.cat_name,
           pagenum: this.pagenum
         })
         const { message } = res.data
         if (message.total === 0) {
           noSearchShow: true
-          noMore: false
           return
-        } else {
-          noMore: true
-          noSearchShow: false
         }
         this.list = [...this.list, ...message.goods]
         this.pagenum = parseInt(message.pagenum)
         this.total = message.total
       }
     },
-    // 获取当前关键词对应的搜索结果列表
     async onLoad(options) {
-      this.list = []
-      console.log(options)
-      this.keyword = options.query
+      // console.log(options)
+      this.cat_name = options.cat_name
       this.getData()
     },
     onReachBottom() {
-      if (this.list.length >= this.total) {
-        noMore: true
-        return
-      } else {
-        noSearchShow: false
-        noMore: false
-      }
       this.pagenum = this.pagenum + 1
       this.getData()
-      console.log(this.pagenum)
+      if (this.list.length >= this.total) {
+        noMore: false
+      } else {
+        noMore: true
+      }
     }
   }
 </script>
